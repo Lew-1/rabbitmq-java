@@ -35,6 +35,9 @@ public class Producer {
             // 通过连接获取通道
             channel = connection.createChannel();
             String queueName = "queue1";
+            channel.queueDeclare("order", true, false, true, null);
+            channel.queueDeclare("email", true, false, true, null);
+            channel.queueDeclare("phone", true, false, true, null);
             // 通过通道创建交换机，声明队列，绑定关系，路由key，发送和接收消息
             /**
              * @param durable 是否持久化，是则在队列重启后还保留
@@ -47,10 +50,15 @@ public class Producer {
             String message = "66";
             // 准备交换机
             String exchangeName = "direct.test";
-            // 定义路由key，没有意义，fanout是广播
-            String routeKey = "phone";
             // 指定交换机类型
             String exchangeType = "direct";
+            channel.exchangeDeclare(exchangeName, exchangeType);
+            channel.queueBind("order", exchangeName, "order");
+            channel.queueBind("email", exchangeName, "email");
+            channel.queueBind("phone", exchangeName, "phone");
+
+            // 定义路由key，没有意义，fanout是广播
+            String routeKey = "email";
             // 发送消息
             channel.basicPublish(exchangeName, routeKey, null, message.getBytes());
         } catch (IOException | TimeoutException e) {

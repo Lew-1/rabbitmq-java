@@ -73,9 +73,9 @@ public class Consumer {
     };
 
     public static void main(String[] args) {
-        new Thread(runnable, "queue1").start();
-        new Thread(runnable, "queue2").start();
-        new Thread(runnable, "queue3").start();
+        new Thread(runnable, "order").start();
+        new Thread(runnable, "email").start();
+        new Thread(runnable, "phone").start();
     }
     
 }
