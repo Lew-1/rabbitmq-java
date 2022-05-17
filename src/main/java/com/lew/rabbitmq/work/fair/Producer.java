@@ -3,6 +3,7 @@ package com.lew.rabbitmq.work.fair;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.MessageProperties;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -48,7 +49,7 @@ public class Producer {
             for (int i = 0; i < 20; i++) {
                 String message = "轮询消息" + i;
                 // 发送消息
-                channel.basicPublish("", queueName, null, message.getBytes());
+                channel.basicPublish("", queueName, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
             }
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
